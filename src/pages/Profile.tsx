@@ -49,12 +49,12 @@ export default function Profile() {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
           {/* Back Button - aligned with card edge */}
           <div className="pt-6 pb-1">
-           <button
-  onClick={() => navigate("/")}
-  className="flex items-center text-gray-600 pl-1 transition-transform duration-200 hover:scale-105 hover:font-semibold outline-none border-none focus:outline-none focus:border-none active:outline-none"
->
-  ← Welcome, {user.name}
-</button>
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center text-gray-600 pl-1 transition-transform duration-200 hover:scale-105 hover:font-semibold outline-none border-none focus:outline-none focus:border-none active:outline-none"
+            >
+              ← Welcome, {user.name}
+            </button>
           </div>
 
           {/* Profile Card */}

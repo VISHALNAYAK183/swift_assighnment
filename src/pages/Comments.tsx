@@ -16,6 +16,8 @@ type SortOrder = "asc" | "desc" | null;
 
 export default function Comments() {
   const [comments, setComments] = useState<Comment[]>([]);
+
+  // Restore filters from localStorage
   const [search, setSearch] = useState(localStorage.getItem("search") || "");
   const [page, setPage] = useState(Number(localStorage.getItem("page")) || 1);
   const [pageSize, setPageSize] = useState(
@@ -35,7 +37,7 @@ export default function Comments() {
       .then((data: Comment[]) => setComments(data));
   }, []);
 
-  // Save filters to localStorage
+  // Persist filters
   useEffect(() => {
     localStorage.setItem("search", search);
     localStorage.setItem("page", String(page));
@@ -73,7 +75,7 @@ export default function Comments() {
   const paginated = sorted.slice(startIndex, startIndex + pageSize);
   const totalPages = Math.ceil(filtered.length / pageSize);
 
-  // Handle sort toggle
+  // Handle sort toggle (no sort → asc → desc → no sort)
   const toggleSort = (key: SortKey) => {
     if (sortKey !== key) {
       setSortKey(key);
@@ -83,9 +85,11 @@ export default function Comments() {
       else if (sortOrder === "desc") {
         setSortKey(null);
         setSortOrder(null);
-      } else setSortOrder("asc");
+      } else {
+        setSortOrder("asc");
+      }
     }
-    setPage(1);
+    setPage(1); // reset page to first
   };
 
   return (
@@ -98,21 +102,33 @@ export default function Comments() {
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => toggleSort("postId")}
-              className="px-4 py-2 bg-gray-200 rounded"
+              className={`px-4 py-2 rounded ${
+                sortKey === "postId"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
             >
-              Sort Post ID
+              Sort Post ID {sortKey === "postId" && (sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : "")}
             </button>
             <button
               onClick={() => toggleSort("name")}
-              className="px-4 py-2 bg-gray-200 rounded"
+              className={`px-4 py-2 rounded ${
+                sortKey === "name"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
             >
-              Sort Name
+              Sort Name {sortKey === "name" && (sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : "")}
             </button>
             <button
               onClick={() => toggleSort("email")}
-              className="px-4 py-2 bg-gray-200 rounded"
+              className={`px-4 py-2 rounded ${
+                sortKey === "email"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
             >
-              Sort Email
+              Sort Email {sortKey === "email" && (sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : "")}
             </button>
           </div>
           <SearchBar
@@ -125,7 +141,7 @@ export default function Comments() {
           />
         </div>
 
-        {/* Table - responsive scroll */}
+        {/* Table */}
         <div className="overflow-x-auto bg-white shadow rounded">
           <table className="min-w-full border-collapse">
             <thead className="bg-gray-100">

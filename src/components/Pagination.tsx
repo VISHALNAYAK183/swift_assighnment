@@ -17,28 +17,73 @@ export default function Pagination({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) {
+  const getPages = () => {
+    const pages: (number | string)[] = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (page <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (page >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", page - 1, page, page + 1, "...", totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   return (
-    <div className="flex justify-between items-center mt-4">
-      <span>
+    <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
+      <span className="text-sm text-gray-600">
         {startIndex + 1}-{Math.min(startIndex + pageSize, totalItems)} of{" "}
         {totalItems} items
       </span>
-      <div className="flex items-center gap-2">
+
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Previous */}
         <button
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
         >
-          Prev
+          Previous
         </button>
-        <span>{page}</span>
+
+        {/* Page Numbers */}
+        {getPages().map((p, i) =>
+          p === "..." ? (
+            <span key={i} className="px-3 py-1 text-gray-500">
+              ...
+            </span>
+          ) : (
+            <button
+              key={i}
+              onClick={() => onPageChange(p as number)}
+              className={`px-3 py-1 rounded ${
+                page === p
+                  ? "bg-gray-400 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              {p}
+            </button>
+          )
+        )}
+
+        {/* Next */}
         <button
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
         >
           Next
         </button>
+
+        {/* Page Size */}
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
