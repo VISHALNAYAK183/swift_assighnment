@@ -39,48 +39,77 @@ export default function Profile() {
   if (!user) return <p className="p-6">Loading profile...</p>;
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-50 overflow-x-hidden">
+      {/* Navbar */}
       <Navbar userName={user.name} userEmail={user.email} />
-      <div className="p-6 max-w-3xl mx-auto">
-        <h1 className="text-xl font-semibold mb-4">Welcome, {user.name}</h1>
-        <div className="bg-white shadow rounded-lg p-6 flex gap-6 items-center">
-          {/* Avatar */}
-          <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold">
-            {user.name.charAt(0)}
-          </div>
-          {/* Details */}
-          <div className="w-full">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">User ID</p>
-                <p className="font-medium">{user.id}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Name</p>
-                <p className="font-medium">{user.name}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Email ID</p>
-                <p className="font-medium">{user.email}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Address</p>
-                <p className="font-medium">
-                  {user.address.street}, {user.address.city}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">{user.phone}</p>
-              </div>
-            </div>
-            <button
-              onClick={() => navigate("/")}
-              className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Back to Dashboard
-            </button>
-          </div>
+
+      {/* Page Content - now truly full width */}
+      <div className="flex-1 w-screen px-0">
+        {/* Back Button - adjusted positioning */}
+        <div className="w-full max-w-[calc(100vw-2rem)] mx-auto pt-4 pl-4 sm:pl-6">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center text-gray-600 hover:text-gray-800 mb-4"
+          >
+            ← Welcome, {user.name}
+          </button>
+        </div>
+
+        {/* Content Container */}
+        <div className="w-full max-w-[calc(100vw-2rem)] mx-auto px-4 sm:px-6">
+          {/* <h1 className="text-lg sm:text-xl font-semibold mb-4">
+            Welcome, {user.name}
+          </h1> */}
+{/* Profile Card - narrower & taller */}
+<div className="bg-white shadow rounded-lg p-10 w-full max-w-7xl mx-auto">
+  {/* Header */}
+  <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-8">
+    <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold text-gray-700">
+      {user.name.charAt(0)}
+    </div>
+    <div>
+      <p className="text-xl font-semibold">{user.name}</p>
+      <p className="text-sm text-gray-500">{user.email}</p>
+    </div>
+  </div>
+
+  {/* Grid Layout */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+    <div className="min-w-0">
+      <p className="text-sm text-gray-500">User ID</p>
+      <div className="bg-gray-100 border border-gray-200 rounded px-4 py-3">
+        {user.id}
+      </div>
+    </div>
+    <div className="min-w-0">
+      <p className="text-sm text-gray-500">Name</p>
+      <div className="bg-gray-100 border border-gray-200 rounded px-4 py-3">
+        {user.name}
+      </div>
+    </div>
+    <div className="min-w-0">
+      <p className="text-sm text-gray-500">Email ID</p>
+      <div className="bg-gray-100 border border-gray-200 rounded px-4 py-3">
+        {user.email}
+      </div>
+    </div>
+    <div className="min-w-0">
+      <p className="text-sm text-gray-500">Address</p>
+      <div className="bg-gray-100 border border-gray-200 rounded px-4 py-3">
+        {user.address.street}, {user.address.city}
+      </div>
+    </div>
+    <div className="min-w-0">
+      <p className="text-sm text-gray-500">Phone</p>
+      <div className="bg-gray-100 border border-gray-200 rounded px-4 py-3">
+        {user.phone}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
         </div>
       </div>
     </div>
