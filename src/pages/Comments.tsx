@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import Pagination from "../components/Pagination";
+import SearchBar from "../components/SearchBar";
 
 interface Comment {
   postId: number;
@@ -87,13 +89,13 @@ export default function Comments() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar userName="Ervin Howell" userEmail="ervin@howell.com" />
 
-      <div className="p-6 max-w-6xl mx-auto">
+      <div className="flex-1 p-4 sm:p-6 w-full">
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => toggleSort("postId")}
               className="px-4 py-2 bg-gray-200 rounded"
@@ -113,76 +115,53 @@ export default function Comments() {
               Sort Email
             </button>
           </div>
-          <input
-            type="text"
+          <SearchBar
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
+            onChange={(val) => {
+              setSearch(val);
               setPage(1);
             }}
             placeholder="Search name, email, comment"
-            className="border rounded px-3 py-2 w-72"
           />
         </div>
 
-        {/* Table */}
-        <table className="w-full border-collapse bg-white shadow">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2 text-left">Post ID</th>
-              <th className="border p-2 text-left">Name</th>
-              <th className="border p-2 text-left">Email</th>
-              <th className="border p-2 text-left">Comment</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.map((c) => (
-              <tr key={c.id} className="hover:bg-gray-50">
-                <td className="border p-2">{c.postId}</td>
-                <td className="border p-2">{c.name}</td>
-                <td className="border p-2">{c.email}</td>
-                <td className="border p-2">{c.body}</td>
+        {/* Table - responsive scroll */}
+        <div className="overflow-x-auto bg-white shadow rounded">
+          <table className="min-w-full border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border p-2 text-left">Post ID</th>
+                <th className="border p-2 text-left">Name</th>
+                <th className="border p-2 text-left">Email</th>
+                <th className="border p-2 text-left">Comment</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* Pagination Controls */}
-        <div className="flex justify-between items-center mt-4">
-          <span>
-            {startIndex + 1}-{Math.min(startIndex + pageSize, filtered.length)}{" "}
-            of {filtered.length} items
-          </span>
-          <div className="flex items-center gap-2">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
-              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span>{page}</span>
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
-                setPage(1);
-              }}
-              className="border rounded px-2 py-1"
-            >
-              <option value={10}>10 / Page</option>
-              <option value={50}>50 / Page</option>
-              <option value={100}>100 / Page</option>
-            </select>
-          </div>
+            </thead>
+            <tbody>
+              {paginated.map((c) => (
+                <tr key={c.id} className="hover:bg-gray-50">
+                  <td className="border p-2">{c.postId}</td>
+                  <td className="border p-2">{c.name}</td>
+                  <td className="border p-2">{c.email}</td>
+                  <td className="border p-2">{c.body}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+
+        {/* Pagination */}
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          totalItems={filtered.length}
+          startIndex={startIndex}
+          onPageChange={(p) => setPage(p)}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setPage(1);
+          }}
+        />
       </div>
     </div>
   );
