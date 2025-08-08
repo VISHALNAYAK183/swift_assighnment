@@ -17,7 +17,6 @@ type SortOrder = "asc" | "desc" | null;
 export default function Comments() {
   const [comments, setComments] = useState<Comment[]>([]);
 
-  // Restore filters from localStorage
   const [search, setSearch] = useState(localStorage.getItem("search") || "");
   const [page, setPage] = useState(Number(localStorage.getItem("page")) || 1);
   const [pageSize, setPageSize] = useState(
@@ -30,14 +29,12 @@ export default function Comments() {
     (localStorage.getItem("sortOrder") as SortOrder) || null
   );
 
-  // Fetch data
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/comments")
       .then((res) => res.json())
       .then((data: Comment[]) => setComments(data));
   }, []);
 
-  // Persist filters
   useEffect(() => {
     localStorage.setItem("search", search);
     localStorage.setItem("page", String(page));
@@ -46,7 +43,6 @@ export default function Comments() {
     localStorage.setItem("sortOrder", sortOrder || "");
   }, [search, page, pageSize, sortKey, sortOrder]);
 
-  // Filtered data
   const filtered = comments.filter(
     (c) =>
       c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -54,7 +50,6 @@ export default function Comments() {
       c.body.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Sort logic
   const sorted = [...filtered].sort((a, b) => {
     if (!sortKey || !sortOrder) return 0;
     const valA = a[sortKey];
@@ -70,12 +65,12 @@ export default function Comments() {
     return 0;
   });
 
-  // Pagination
+  
   const startIndex = (page - 1) * pageSize;
   const paginated = sorted.slice(startIndex, startIndex + pageSize);
   const totalPages = Math.ceil(filtered.length / pageSize);
 
-  // Handle sort toggle (no sort → asc → desc → no sort)
+ 
   const toggleSort = (key: SortKey) => {
     if (sortKey !== key) {
       setSortKey(key);
@@ -89,7 +84,7 @@ export default function Comments() {
         setSortOrder("asc");
       }
     }
-    setPage(1); // reset page to first
+    setPage(1); 
   };
 
   return (
@@ -97,7 +92,7 @@ export default function Comments() {
       <Navbar userName="Ervin Howell" userEmail="ervin@howell.com" />
 
       <div className="flex-1 p-4 sm:p-6 w-full">
-        {/* Controls */}
+      
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex gap-2 flex-wrap">
             <button
@@ -141,7 +136,7 @@ export default function Comments() {
           />
         </div>
 
-        {/* Table */}
+        
         <div className="overflow-x-auto bg-white shadow rounded">
           <table className="min-w-full border-collapse">
             <thead className="bg-gray-100">

@@ -44,7 +44,6 @@ export default function Pagination({
       </span>
 
       <div className="flex items-center gap-2 flex-wrap">
-        {/* Previous */}
         <button
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
@@ -53,7 +52,6 @@ export default function Pagination({
           Previous
         </button>
 
-        {/* Page Numbers */}
         {getPages().map((p, i) =>
           p === "..." ? (
             <span key={i} className="px-3 py-1 text-gray-500">
@@ -74,7 +72,6 @@ export default function Pagination({
           )
         )}
 
-        {/* Next */}
         <button
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
@@ -82,8 +79,6 @@ export default function Pagination({
         >
           Next
         </button>
-
-        {/* Page Size */}
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}

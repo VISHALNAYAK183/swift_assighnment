@@ -43,11 +43,11 @@ export default function Profile() {
       {/* Navbar */}
       <Navbar userName={user.name} userEmail={user.email} />
 
-      {/* Page Content */}
+   
       <div className="flex-1 w-screen px-0">
-        {/* Content Container */}
+      
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
-          {/* Back Button - aligned with card edge */}
+          {/* Back Button */}
           <div className="pt-6 pb-1">
             <button
               onClick={() => navigate("/")}
@@ -59,7 +59,7 @@ export default function Profile() {
 
           {/* Profile Card */}
           <div className="bg-white shadow rounded-lg p-10 w-full">
-            {/* Header */}
+           
             <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-8">
               <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold text-gray-700">
                 {user.name.charAt(0)}
@@ -70,7 +70,7 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Grid Layout */}
+           
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
               <div className="min-w-0">
                 <p className="text-sm text-gray-500">User ID</p>
